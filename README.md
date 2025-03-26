@@ -82,42 +82,29 @@ ZOOM_CLIENT_ID=your_zoom_client_id
 ZOOM_CLIENT_SECRET=your_zoom_client_secret
 Replace your_zoom_account_id, your_zoom_client_id, and your_zoom_client_secret with the credentials obtained from the Zoom Developer Dashboard.
 
-Explanation of the Script:
-Loading Environment Variables:
-
-The script uses python-dotenv to load credentials stored in the .env file.
-
-OAuth Token Generation:
-
-The get_access_token function retrieves an OAuth token using the client_id, client_secret, and account_id stored in the .env file.
-
-Fetching Recordings:
-
-The get_all_recordings function retrieves all meetings' recordings within the specified date range from the Zoom API.
-
-Downloading Recordings:
-
-The download_recordings function organizes downloaded recordings into folders by year and month, and saves them in the zoom_recordings directory.
-
 4. Running the Script
-Ensure you have Python 3.x installed on your system.
+Step 1: Download the Script
+Download the Python script from the repository or create it in your own editor using the guidelines provided.
 
-Install required dependencies by running:
+Step 2: Set Up the .env File
+Create a .env file in the same directory as the script and insert your Zoom API credentials as described earlier.
+
+Step 3: Install Dependencies
+Install the required Python packages by running the following command:
 
 bash
 Copy
 Edit
 pip install requests python-dotenv
-Create the .env file with your credentials as described earlier.
-
-Run the script:
+Step 4: Run the Script
+Once everything is set up, run the script by executing:
 
 bash
 Copy
 Edit
 python zoom_recording_downloader.py
-Output:
-The script will download all Zoom recordings from the specified date range into the zoom_recordings directory. The recordings are organized by year, month, and meeting details.
+Expected Output:
+The script will download all Zoom recordings from the specified date range into a folder called zoom_recordings. The recordings are organized by year, month, and meeting details.
 
 5. Troubleshooting
 Invalid OAuth Token: Ensure that your OAuth token is valid. If expired, you'll need to regenerate it by authenticating through Zoom's OAuth flow.
@@ -125,3 +112,20 @@ Invalid OAuth Token: Ensure that your OAuth token is valid. If expired, you'll n
 Scope Errors: Ensure you have added the correct scopes in your Zoom OAuth app settings as specified in this documentation.
 
 Download Errors: If a download fails, the script will skip that file and continue with the next one.
+
+6. Notes
+OAuth App Credentials:
+Client ID: The unique identifier for your app.
+
+Client Secret: The secret key for authenticating your app.
+
+Account ID: The Zoom account ID tied to the app.
+
+These credentials are stored in the .env file to keep them secure. Never commit the .env file to any public repository.
+
+7. License and Attribution
+This project is open-source, and you are free to use, modify, and distribute it under the terms of the MIT License.
+
+8. Contribution
+Feel free to fork this repository and submit a pull request if you have improvements, bug fixes, or new features you'd like to contribute.
+
