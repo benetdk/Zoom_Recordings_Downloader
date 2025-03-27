@@ -4,8 +4,8 @@ import time
 from datetime import datetime, timedelta
 from dotenv import load_dotenv
 
-# Cargar variables de entorno
-load_dotenv()
+# Cargar variables de entorno desde credentials.env
+load_dotenv("credentials.env")
 
 # Zoom API credentials
 CLIENT_ID = os.getenv("CLIENT_ID")
