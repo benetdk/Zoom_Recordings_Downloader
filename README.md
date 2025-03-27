@@ -1,127 +1,75 @@
+# Zoom Recordings Downloader
 
-# Zoom Recording Downloader: Setup and Usage Documentation
+Este script descarga automáticamente las grabaciones de Zoom dentro de un rango de fechas específico. Utiliza la API de Zoom para obtener los enlaces de descarga y guarda los archivos en una estructura organizada por fecha.
 
-## 1. Prerequisites
+## 🚀 Instalación y Configuración
 
-Before running the script, ensure you have the following:
-
-- **Python 3.x** installed on your machine.
-- **pip** installed to manage Python packages.
-- A **Zoom OAuth App** set up with the necessary scopes and credentials.
-- A **.env** file to securely store your Zoom API credentials.
-
-## 2. Creating and Configuring the Zoom OAuth App
-
-To interact with the Zoom API, you must first create an OAuth app and configure it with the necessary scopes.
-
-### Steps to Create a Zoom OAuth App:
-1. **Go to the Zoom Developer Dashboard:**
-   - Navigate to [Zoom App Marketplace](https://marketplace.zoom.us/).
-   - Log in to your Zoom account.
-   - Click on **Develop** > **Build App**.
-
-2. **Create a New OAuth App:**
-   - Select **OAuth** from the app types.
-   - Fill out the necessary details for your app:
-     - **App Name**: Choose a name for your app (e.g., "Zoom Recording Downloader").
-     - **App Description**: Provide a brief description of your app (optional).
-     - **OAuth Redirect URL**: You can use a localhost URL during development (e.g., `http://localhost:8080`).
-     - **Category**: Select the category that best describes your app.
-
-3. **Get Your App Credentials:**
-   - Once your app is created, navigate to the **App Credentials** section to retrieve the following details:
-     - **Client ID**
-     - **Client Secret**
-     - **Account ID**
-
-4. **Configure OAuth Scopes:**
-   - Under **OAuth Scopes**, add the following scopes:
-     - **`account:read`** - Allows the app to access account-level information.
-     - **`user:read`** - Provides access to user details within the account.
-     - **`meeting:read`** - Access to read meeting details, including recordings.
-     - **`recording:read`** - Allows access to recordings for meetings.
-     - **`report:read`** (optional) - Provides access to meeting reports.
-
-5. **Save Your App Settings**.
-
----
-
-## 3. Setting Up Your Python Script
-
-### Step 1: Install Required Python Packages
-Install the necessary Python packages using `pip`:
-
-```bash
-pip install requests python-dotenv
+### 1️⃣ Clonar el repositorio
+```sh
+git clone https://github.com/tuusuario/zoom-downloader.git
+cd zoom-downloader
 ```
 
-### Step 2: Create a `.env` File for Zoom API Credentials
-Create a `.env` file in the same directory as your script. The file will securely store your Zoom credentials:
-
-#### `.env` File Contents:
-
-```plaintext
-ZOOM_ACCOUNT_ID=your_zoom_account_id
-ZOOM_CLIENT_ID=your_zoom_client_id
-ZOOM_CLIENT_SECRET=your_zoom_client_secret
+### 2️⃣ Crear un entorno virtual (opcional pero recomendado)
+```sh
+python3 -m venv venv
+source venv/bin/activate  # En Windows: venv\Scripts\activate
 ```
 
-- Replace `your_zoom_account_id`, `your_zoom_client_id`, and `your_zoom_client_secret` with the credentials obtained from the Zoom Developer Dashboard.
-
----
-
-## 4. Running the Script
-
-### Step 1: Download the Script
-- Download the Python script from the repository or create it in your own editor using the guidelines provided.
-
-### Step 2: Set Up the `.env` File
-- Create a `.env` file in the same directory as the script and insert your Zoom API credentials as described earlier.
-
-### Step 3: Install Dependencies
-- Install the required Python packages by running the following command:
-
-```bash
-pip install requests python-dotenv
+### 3️⃣ Instalar dependencias
+```sh
+pip install -r requirements.txt
 ```
 
-### Step 4: Run the Script
-Once everything is set up, run the script by executing:
+### 4️⃣ Configurar la API de Zoom
+Para usar este script, necesitas crear una aplicación en el Marketplace de Zoom y obtener las credenciales necesarias.
 
-```bash
-python zoom_recording_downloader.py
+1. Accede a [Zoom App Marketplace](https://marketplace.zoom.us/).
+2. Inicia sesión con tu cuenta de Zoom.
+3. Crea una nueva aplicación con el tipo **"Server-to-Server OAuth"**.
+4. En la pestaña **"App Credentials"**, copia los valores de `Client ID`, `Client Secret` y `Account ID`.
+5. En la pestaña **"Scopes"**, añade los siguientes permisos:
+   - `recording:read:admin` (Para leer grabaciones)
+   - `report:read:admin` (Para acceder a los reportes de reuniones)
+   - `meeting:read:admin` (Para obtener detalles de las reuniones)
+6. Guarda los cambios y activa la aplicación.
+
+### 5️⃣ Configurar credenciales
+
+Crea un archivo `.env` en la raíz del proyecto con el siguiente contenido:
+
+```ini
+CLIENT_ID=tu_client_id
+CLIENT_SECRET=tu_client_secret
+ACCOUNT_ID=tu_account_id
 ```
 
-### Expected Output:
-- The script will download all Zoom recordings from the specified date range into a folder called `zoom_recordings`. The recordings are organized by year, month, and meeting details.
+Asegúrate de reemplazar `tu_client_id`, `tu_client_secret` y `tu_account_id` con las credenciales reales de la API de Zoom.
+
+### 6️⃣ Configurar fechas de descarga
+Edita el archivo `Zoom_Downloader_v2.py` y cambia los valores de `start_date` y `end_date` en la función `main()`:
+
+```python
+start_date = "2025-01-01"  # Fecha de inicio
+end_date = "2025-12-31"    # Fecha de fin
+```
+
+## 📥 Uso
+Ejecuta el script con el siguiente comando:
+```sh
+python Zoom_Downloader_v2.py
+```
+
+El script descargará todas las grabaciones disponibles en el período especificado y las almacenará en `zoom_recordings/` organizadas por año y mes.
+
+## 🛠️ Solución de Problemas
+- **Error 400 (Bad Request)**: Verifica que la API de Zoom está activada y que las credenciales son correctas.
+- **Rate Limit Exceeded**: Si la API de Zoom limita la cantidad de solicitudes, el script esperará automáticamente antes de reintentar.
+- **Faltan grabaciones**: Asegúrate de que la cuenta tiene permisos suficientes para acceder a todas las grabaciones.
+
+## 📜 Licencia
+Este proyecto está bajo la licencia MIT. Puedes modificar y distribuir libremente el código.
 
 ---
+**¡Listo! Ahora puedes descargar tus grabaciones de Zoom automáticamente! 🚀**
 
-## 5. Troubleshooting
-
-- **Invalid OAuth Token**: Ensure that your OAuth token is valid. If expired, you'll need to regenerate it by authenticating through Zoom's OAuth flow.
-- **Scope Errors**: Ensure you have added the correct scopes in your Zoom OAuth app settings as specified in this documentation.
-- **Download Errors**: If a download fails, the script will skip that file and continue with the next one.
-
----
-
-## 6. Notes
-
-### OAuth App Credentials:
-- **Client ID**: The unique identifier for your app.
-- **Client Secret**: The secret key for authenticating your app.
-- **Account ID**: The Zoom account ID tied to the app.
-
-These credentials are stored in the `.env` file to keep them secure. Never commit the `.env` file to any public repository.
-
----
-
-## 7. License and Attribution
-
-This project is open-source, and you are free to use, modify, and distribute it under the terms of the [MIT License](LICENSE).
-
----
-
-## 8. Contribution
-
-Feel free to fork this repository and submit a pull request if you have improvements, bug fixes, or new features you'd like to contribute.
